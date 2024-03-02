@@ -1,0 +1,49 @@
+import React, { useState } from "react";
+import { Box, Button, VStack, Text, Container, Heading } from "@chakra-ui/react";
+import { FaCalculator } from "react-icons/fa";
+
+const Index = () => {
+  const [mersennePrimes, setMersennePrimes] = useState([]);
+
+  const isPrime = (num) => {
+    if (num <= 1) return false;
+    if (num <= 3) return true;
+
+    if (num % 2 === 0 || num % 3 === 0) return false;
+
+    for (let i = 5; i * i <= num; i += 6) {
+      if (num % i === 0 || num % (i + 2) === 0) return false;
+    }
+
+    return true;
+  };
+
+  const generateMersennePrimes = () => {
+    const primes = [];
+    for (let i = 2; primes.length < 10; i++) {
+      const mersenneCandidate = Math.pow(2, i) - 1;
+      if (isPrime(i) && isPrime(mersenneCandidate)) {
+        primes.push(mersenneCandidate);
+      }
+    }
+    setMersennePrimes(primes);
+  };
+
+  return (
+    <Container maxW="container.md" py={10}>
+      <VStack spacing={8}>
+        <Heading>Mersenne Prime Generator</Heading>
+        <Button leftIcon={<FaCalculator />} colorScheme="teal" onClick={generateMersennePrimes}>
+          Generate Mersenne Primes
+        </Button>
+        <Box>
+          {mersennePrimes.map((prime, index) => (
+            <Text key={index}>Mersenne Prime: {prime}</Text>
+          ))}
+        </Box>
+      </VStack>
+    </Container>
+  );
+};
+
+export default Index;
